@@ -1,6 +1,5 @@
-package org.bouncycastle.mail.smime.handlers;
+package org.spongycastle.mail.smime.handlers;
 
-import java.awt.datatransfer.DataFlavor;
 import java.io.BufferedInputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -17,14 +16,14 @@ import javax.mail.internet.ContentType;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 
-import org.bouncycastle.mail.smime.SMIMEStreamingProcessor;
-import org.bouncycastle.mail.smime.SMIMEUtil;
+import org.spongycastle.mail.smime.SMIMEStreamingProcessor;
+import org.spongycastle.mail.smime.SMIMEUtil;
 
 public class multipart_signed 
     implements DataContentHandler 
 {
     private static final ActivationDataFlavor ADF = new ActivationDataFlavor(MimeMultipart.class, "multipart/signed", "Multipart Signed");
-    private static final DataFlavor[]         DFS = new DataFlavor[] { ADF };
+    private static final ActivationDataFlavor[]         DFS = new ActivationDataFlavor[] { ADF };
     
     public Object getContent(DataSource ds) 
         throws IOException 
@@ -39,7 +38,7 @@ public class multipart_signed
         }
     }
     
-    public Object getTransferData(DataFlavor df, DataSource ds) 
+    public Object getTransferData(ActivationDataFlavor df, DataSource ds)
         throws IOException 
     {    
         if (ADF.equals(df))
@@ -52,7 +51,7 @@ public class multipart_signed
         }
     }
     
-    public DataFlavor[] getTransferDataFlavors() 
+    public ActivationDataFlavor[] getTransferDataFlavors() 
     {
         return DFS;
     }

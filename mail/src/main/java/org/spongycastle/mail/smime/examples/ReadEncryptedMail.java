@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.examples;
+package org.spongycastle.mail.smime.examples;
 
 import java.io.FileInputStream;
 import java.security.KeyStore;
@@ -11,19 +11,19 @@ import javax.mail.Session;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 
-import org.bouncycastle.cms.RecipientId;
-import org.bouncycastle.cms.RecipientInformation;
-import org.bouncycastle.cms.RecipientInformationStore;
-import org.bouncycastle.cms.jcajce.JceKeyTransEnvelopedRecipient;
-import org.bouncycastle.cms.jcajce.JceKeyTransRecipientId;
-import org.bouncycastle.mail.smime.SMIMEEnveloped;
-import org.bouncycastle.mail.smime.SMIMEUtil;
+import org.spongycastle.cms.RecipientId;
+import org.spongycastle.cms.RecipientInformation;
+import org.spongycastle.cms.RecipientInformationStore;
+import org.spongycastle.cms.jcajce.JceKeyTransEnvelopedRecipient;
+import org.spongycastle.cms.jcajce.JceKeyTransRecipientId;
+import org.spongycastle.mail.smime.SMIMEEnveloped;
+import org.spongycastle.mail.smime.SMIMEUtil;
 
 /**
  * a simple example that reads an encrypted email.
  * <p>
  * The key store can be created using the class in
- * org.bouncycastle.jce.examples.PKCS12Example - the program expects only one
+ * org.spongycastle.jce.examples.PKCS12Example - the program expects only one
  * key to be present.
  */
 public class ReadEncryptedMail
@@ -41,7 +41,7 @@ public class ReadEncryptedMail
         //
         // Open the key store
         //
-        KeyStore    ks = KeyStore.getInstance("PKCS12", "BC");
+        KeyStore    ks = KeyStore.getInstance("PKCS12", "SC");
 
         ks.load(new FileInputStream(args[0]), args[1].toCharArray());
 
@@ -85,7 +85,7 @@ public class ReadEncryptedMail
         RecipientInformationStore   recipients = m.getRecipientInfos();
         RecipientInformation        recipient = recipients.get(recId);
 
-        MimeBodyPart        res = SMIMEUtil.toMimeBodyPart(recipient.getContent(new JceKeyTransEnvelopedRecipient((PrivateKey)ks.getKey(keyAlias, null)).setProvider("BC")));
+        MimeBodyPart        res = SMIMEUtil.toMimeBodyPart(recipient.getContent(new JceKeyTransEnvelopedRecipient((PrivateKey)ks.getKey(keyAlias, null)).setProvider("SC")));
 
         System.out.println("Message Contents");
         System.out.println("----------------");

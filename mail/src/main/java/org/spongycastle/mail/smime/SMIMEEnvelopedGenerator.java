@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime;
+package org.spongycastle.mail.smime;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,13 +13,13 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 
-import org.bouncycastle.asn1.ASN1EncodableVector;
-import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.cms.CMSEnvelopedDataGenerator;
-import org.bouncycastle.cms.CMSEnvelopedDataStreamGenerator;
-import org.bouncycastle.cms.CMSException;
-import org.bouncycastle.cms.RecipientInfoGenerator;
-import org.bouncycastle.operator.OutputEncryptor;
+import org.spongycastle.asn1.ASN1EncodableVector;
+import org.spongycastle.asn1.ASN1ObjectIdentifier;
+import org.spongycastle.cms.CMSEnvelopedDataGenerator;
+import org.spongycastle.cms.CMSEnvelopedDataStreamGenerator;
+import org.spongycastle.cms.CMSException;
+import org.spongycastle.cms.RecipientInfoGenerator;
+import org.spongycastle.operator.OutputEncryptor;
 
 /**
  * General class for generating a pkcs7-mime message.
@@ -29,9 +29,9 @@ import org.bouncycastle.operator.OutputEncryptor;
  * <pre>
  *      SMIMEEnvelopedGenerator  fact = new SMIMEEnvelopedGenerator();
  *
- *      fact.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(recipientCert).setProvider("BC"));
+ *      fact.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(recipientCert).setProvider("SC"));
  *
- *      MimeBodyPart mp = fact.generate(content, new JceCMSContentEncryptorBuilder(CMSAlgorithm.RC2_CBC, 40).setProvider("BC").build());
+ *      MimeBodyPart mp = fact.generate(content, new JceCMSContentEncryptorBuilder(CMSAlgorithm.RC2_CBC, 40).setProvider("SC").build());
  * </pre>
  *
  * <b>Note:<b> Most clients expect the MimeBodyPart to be in a MimeMultipart
@@ -90,11 +90,11 @@ public class SMIMEEnvelopedGenerator
 
     private static MailcapCommandMap addCommands(MailcapCommandMap mc)
     {
-        mc.addMailcap("application/pkcs7-signature;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.pkcs7_signature");
-        mc.addMailcap("application/pkcs7-mime;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.pkcs7_mime");
-        mc.addMailcap("application/x-pkcs7-signature;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.x_pkcs7_signature");
-        mc.addMailcap("application/x-pkcs7-mime;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.x_pkcs7_mime");
-        mc.addMailcap("multipart/signed;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.multipart_signed");
+        mc.addMailcap("application/pkcs7-signature;; x-java-content-handler=org.spongycastle.mail.smime.handlers.pkcs7_signature");
+        mc.addMailcap("application/pkcs7-mime;; x-java-content-handler=org.spongycastle.mail.smime.handlers.pkcs7_mime");
+        mc.addMailcap("application/x-pkcs7-signature;; x-java-content-handler=org.spongycastle.mail.smime.handlers.x_pkcs7_signature");
+        mc.addMailcap("application/x-pkcs7-mime;; x-java-content-handler=org.spongycastle.mail.smime.handlers.x_pkcs7_mime");
+        mc.addMailcap("multipart/signed;; x-java-content-handler=org.spongycastle.mail.smime.handlers.multipart_signed");
 
         return mc;
     }

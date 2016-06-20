@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.examples;
+package org.spongycastle.mail.smime.examples;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,16 +16,16 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 
-import org.bouncycastle.cms.CMSAlgorithm;
-import org.bouncycastle.cms.jcajce.JceCMSContentEncryptorBuilder;
-import org.bouncycastle.cms.jcajce.JceKeyTransRecipientInfoGenerator;
-import org.bouncycastle.mail.smime.SMIMEEnvelopedGenerator;
+import org.spongycastle.cms.CMSAlgorithm;
+import org.spongycastle.cms.jcajce.JceCMSContentEncryptorBuilder;
+import org.spongycastle.cms.jcajce.JceKeyTransRecipientInfoGenerator;
+import org.spongycastle.mail.smime.SMIMEEnvelopedGenerator;
 
 /**
  * a simple example that creates a single encrypted mail message.
  * <p>
  * The key store can be created using the class in
- * org.bouncycastle.jce.examples.PKCS12Example - the program expects only one
+ * org.spongycastle.jce.examples.PKCS12Example - the program expects only one
  * key to be present in the key file.
  * <p>
  * Note: while this means that both the private key is available to
@@ -48,7 +48,7 @@ public class CreateLargeEncryptedMail
         //
         // Open the key store
         //
-        KeyStore    ks = KeyStore.getInstance("PKCS12", "BC");
+        KeyStore    ks = KeyStore.getInstance("PKCS12", "SC");
         String      keyAlias = ExampleUtils.findKeyAlias(ks, args[0], args[1].toCharArray());
 
         Certificate[]   chain = ks.getCertificateChain(keyAlias);
@@ -58,7 +58,7 @@ public class CreateLargeEncryptedMail
         //
         SMIMEEnvelopedGenerator  gen = new SMIMEEnvelopedGenerator();
           
-        gen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator((X509Certificate)chain[0]).setProvider("BC"));
+        gen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator((X509Certificate)chain[0]).setProvider("SC"));
 
         //
         // create a subject key id - this has to be done the same way as
@@ -66,7 +66,7 @@ public class CreateLargeEncryptedMail
         // version 3 only.
         //
         /*
-        MessageDigest           dig = MessageDigest.getInstance("SHA1", "BC");
+        MessageDigest           dig = MessageDigest.getInstance("SHA1", "SC");
 
         dig.update(cert.getPublicKey().getEncoded());
               
@@ -82,7 +82,7 @@ public class CreateLargeEncryptedMail
         msg.setHeader("Content-Type", "application/octet-stream");
         msg.setHeader("Content-Transfer-Encoding", "binary");
 
-        MimeBodyPart mp = gen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.RC2_CBC).setProvider("BC").build());
+        MimeBodyPart mp = gen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.RC2_CBC).setProvider("SC").build());
         
         //
         // Get a Session object and create the mail message

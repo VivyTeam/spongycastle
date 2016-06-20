@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.examples;
+package org.spongycastle.mail.smime.examples;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,25 +23,25 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.bouncycastle.asn1.ASN1EncodableVector;
-import org.bouncycastle.asn1.cms.AttributeTable;
-import org.bouncycastle.asn1.cms.IssuerAndSerialNumber;
-import org.bouncycastle.asn1.smime.SMIMECapabilitiesAttribute;
-import org.bouncycastle.asn1.smime.SMIMECapability;
-import org.bouncycastle.asn1.smime.SMIMECapabilityVector;
-import org.bouncycastle.asn1.smime.SMIMEEncryptionKeyPreferenceAttribute;
-import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.asn1.x509.X509Extension;
-import org.bouncycastle.cert.X509v3CertificateBuilder;
-import org.bouncycastle.cert.jcajce.JcaCertStore;
-import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
-import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
-import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
-import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
-import org.bouncycastle.mail.smime.SMIMESignedGenerator;
-import org.bouncycastle.operator.OperatorCreationException;
-import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.bouncycastle.util.Store;
+import org.spongycastle.asn1.ASN1EncodableVector;
+import org.spongycastle.asn1.cms.AttributeTable;
+import org.spongycastle.asn1.cms.IssuerAndSerialNumber;
+import org.spongycastle.asn1.smime.SMIMECapabilitiesAttribute;
+import org.spongycastle.asn1.smime.SMIMECapability;
+import org.spongycastle.asn1.smime.SMIMECapabilityVector;
+import org.spongycastle.asn1.smime.SMIMEEncryptionKeyPreferenceAttribute;
+import org.spongycastle.asn1.x500.X500Name;
+import org.spongycastle.asn1.x509.X509Extension;
+import org.spongycastle.cert.X509v3CertificateBuilder;
+import org.spongycastle.cert.jcajce.JcaCertStore;
+import org.spongycastle.cert.jcajce.JcaX509CertificateConverter;
+import org.spongycastle.cert.jcajce.JcaX509ExtensionUtils;
+import org.spongycastle.cert.jcajce.JcaX509v3CertificateBuilder;
+import org.spongycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
+import org.spongycastle.mail.smime.SMIMESignedGenerator;
+import org.spongycastle.operator.OperatorCreationException;
+import org.spongycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.spongycastle.util.Store;
 
 /**
  * a simple example that creates a single signed multipart mail message.
@@ -80,7 +80,7 @@ public class CreateSignedMultipartMail
             false,
             extUtils.createAuthorityKeyIdentifier(issPub));
 
-        return new JcaX509CertificateConverter().setProvider("BC").getCertificate(v3CertGen.build(new JcaContentSignerBuilder("MD5withRSA").setProvider("BC").build(issPriv)));
+        return new JcaX509CertificateConverter().setProvider("SC").getCertificate(v3CertGen.build(new JcaContentSignerBuilder("MD5withRSA").setProvider("SC").build(issPriv)));
     }
 
     public static void main(
@@ -90,7 +90,7 @@ public class CreateSignedMultipartMail
         //
         // set up our certs
         //
-        KeyPairGenerator    kpg  = KeyPairGenerator.getInstance("RSA", "BC");
+        KeyPairGenerator    kpg  = KeyPairGenerator.getInstance("RSA", "SC");
 
         kpg.initialize(1024, new SecureRandom());
 
@@ -153,7 +153,7 @@ public class CreateSignedMultipartMail
         // will be generated as part of the signature. The encryption algorithm
         // used is taken from the key - in this RSA with PKCS1Padding
         //
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("BC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA1withRSA", origKP.getPrivate(), origCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA1withRSA", origKP.getPrivate(), origCert));
 
         //
         // add our pool of certs and cerls (if any) to go with the signature

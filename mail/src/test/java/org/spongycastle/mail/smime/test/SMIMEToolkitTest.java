@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.test;
+package org.spongycastle.mail.smime.test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,30 +26,30 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.bouncycastle.asn1.nist.NISTObjectIdentifiers;
-import org.bouncycastle.cert.jcajce.JcaCertStore;
-import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
-import org.bouncycastle.cms.CMSAlgorithm;
-import org.bouncycastle.cms.CMSException;
-import org.bouncycastle.cms.SignerInformation;
-import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
-import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
-import org.bouncycastle.cms.jcajce.JceCMSContentEncryptorBuilder;
-import org.bouncycastle.cms.jcajce.JceKeyTransEnvelopedRecipient;
-import org.bouncycastle.cms.jcajce.JceKeyTransRecipientId;
-import org.bouncycastle.cms.jcajce.JceKeyTransRecipientInfoGenerator;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.mail.smime.SMIMEEnvelopedGenerator;
-import org.bouncycastle.mail.smime.SMIMEException;
-import org.bouncycastle.mail.smime.SMIMESigned;
-import org.bouncycastle.mail.smime.SMIMESignedGenerator;
-import org.bouncycastle.mail.smime.SMIMEToolkit;
-import org.bouncycastle.openssl.jcajce.JcaPKIXIdentityBuilder;
-import org.bouncycastle.operator.OperatorCreationException;
-import org.bouncycastle.operator.bc.BcDigestCalculatorProvider;
-import org.bouncycastle.pkix.jcajce.JcaPKIXIdentity;
-import org.bouncycastle.util.CollectionStore;
-import org.bouncycastle.util.Store;
+import org.spongycastle.asn1.nist.NISTObjectIdentifiers;
+import org.spongycastle.cert.jcajce.JcaCertStore;
+import org.spongycastle.cert.jcajce.JcaX509CertificateHolder;
+import org.spongycastle.cms.CMSAlgorithm;
+import org.spongycastle.cms.CMSException;
+import org.spongycastle.cms.SignerInformation;
+import org.spongycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
+import org.spongycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
+import org.spongycastle.cms.jcajce.JceCMSContentEncryptorBuilder;
+import org.spongycastle.cms.jcajce.JceKeyTransEnvelopedRecipient;
+import org.spongycastle.cms.jcajce.JceKeyTransRecipientId;
+import org.spongycastle.cms.jcajce.JceKeyTransRecipientInfoGenerator;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.mail.smime.SMIMEEnvelopedGenerator;
+import org.spongycastle.mail.smime.SMIMEException;
+import org.spongycastle.mail.smime.SMIMESigned;
+import org.spongycastle.mail.smime.SMIMESignedGenerator;
+import org.spongycastle.mail.smime.SMIMEToolkit;
+import org.spongycastle.openssl.jcajce.JcaPKIXIdentityBuilder;
+import org.spongycastle.operator.OperatorCreationException;
+import org.spongycastle.operator.bc.BcDigestCalculatorProvider;
+import org.spongycastle.pkix.jcajce.JcaPKIXIdentity;
+import org.spongycastle.util.CollectionStore;
+import org.spongycastle.util.Store;
 
 public class SMIMEToolkitTest
     extends TestCase
@@ -86,13 +86,13 @@ public class SMIMEToolkitTest
 
     KeyPair         dsaOrigKP;
     X509Certificate dsaOrigCert;
-    private static final String BC = "BC";
+    private static final String BC = "SC";
 
     static
     {
         try
         {
-            if (Security.getProvider("BC") == null)
+            if (Security.getProvider("SC") == null)
             {
                 Security.addProvider(new BouncyCastleProvider());
             }

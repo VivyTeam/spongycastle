@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.test;
+package org.spongycastle.mail.smime.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -23,36 +23,36 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import junit.framework.TestCase;
-import org.bouncycastle.asn1.ASN1EncodableVector;
-import org.bouncycastle.asn1.cms.AttributeTable;
-import org.bouncycastle.asn1.smime.SMIMECapabilitiesAttribute;
-import org.bouncycastle.asn1.smime.SMIMECapability;
-import org.bouncycastle.asn1.smime.SMIMECapabilityVector;
-import org.bouncycastle.cert.X509CertificateHolder;
-import org.bouncycastle.cert.jcajce.JcaCertStore;
-import org.bouncycastle.cms.CMSAlgorithm;
-import org.bouncycastle.cms.CMSException;
-import org.bouncycastle.cms.RecipientInformation;
-import org.bouncycastle.cms.SignerInformation;
-import org.bouncycastle.cms.SignerInformationStore;
-import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
-import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
-import org.bouncycastle.cms.jcajce.JcaX509CertSelectorConverter;
-import org.bouncycastle.cms.jcajce.JceCMSContentEncryptorBuilder;
-import org.bouncycastle.cms.jcajce.JceKeyTransEnvelopedRecipient;
-import org.bouncycastle.cms.jcajce.JceKeyTransRecipientInfoGenerator;
-import org.bouncycastle.cms.jcajce.ZlibCompressor;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.mail.smime.SMIMECompressedGenerator;
-import org.bouncycastle.mail.smime.SMIMEEnveloped;
-import org.bouncycastle.mail.smime.SMIMEEnvelopedGenerator;
-import org.bouncycastle.mail.smime.SMIMESigned;
-import org.bouncycastle.mail.smime.SMIMESignedGenerator;
-import org.bouncycastle.mail.smime.SMIMESignedParser;
-import org.bouncycastle.mail.smime.SMIMEUtil;
-import org.bouncycastle.mail.smime.util.FileBackedMimeBodyPart;
-import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
-import org.bouncycastle.util.Store;
+import org.spongycastle.asn1.ASN1EncodableVector;
+import org.spongycastle.asn1.cms.AttributeTable;
+import org.spongycastle.asn1.smime.SMIMECapabilitiesAttribute;
+import org.spongycastle.asn1.smime.SMIMECapability;
+import org.spongycastle.asn1.smime.SMIMECapabilityVector;
+import org.spongycastle.cert.X509CertificateHolder;
+import org.spongycastle.cert.jcajce.JcaCertStore;
+import org.spongycastle.cms.CMSAlgorithm;
+import org.spongycastle.cms.CMSException;
+import org.spongycastle.cms.RecipientInformation;
+import org.spongycastle.cms.SignerInformation;
+import org.spongycastle.cms.SignerInformationStore;
+import org.spongycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
+import org.spongycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
+import org.spongycastle.cms.jcajce.JcaX509CertSelectorConverter;
+import org.spongycastle.cms.jcajce.JceCMSContentEncryptorBuilder;
+import org.spongycastle.cms.jcajce.JceKeyTransEnvelopedRecipient;
+import org.spongycastle.cms.jcajce.JceKeyTransRecipientInfoGenerator;
+import org.spongycastle.cms.jcajce.ZlibCompressor;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.mail.smime.SMIMECompressedGenerator;
+import org.spongycastle.mail.smime.SMIMEEnveloped;
+import org.spongycastle.mail.smime.SMIMEEnvelopedGenerator;
+import org.spongycastle.mail.smime.SMIMESigned;
+import org.spongycastle.mail.smime.SMIMESignedGenerator;
+import org.spongycastle.mail.smime.SMIMESignedParser;
+import org.spongycastle.mail.smime.SMIMEUtil;
+import org.spongycastle.mail.smime.util.FileBackedMimeBodyPart;
+import org.spongycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
+import org.spongycastle.util.Store;
 
 public class SMIMEMiscTest
     extends TestCase
@@ -83,7 +83,7 @@ public class SMIMEMiscTest
     {
         try
         {
-            if (Security.getProvider("BC") == null)
+            if (Security.getProvider("SC") == null)
             {
                 Security.addProvider(new BouncyCastleProvider());
             }
@@ -134,14 +134,14 @@ public class SMIMEMiscTest
     
         SMIMEEnvelopedGenerator  encGen = new SMIMEEnvelopedGenerator();
         
-        encGen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(origCert).setProvider("BC"));
+        encGen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(origCert).setProvider("SC"));
 
-        MimeBodyPart   mp = encGen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC).setProvider("BC").build());
+        MimeBodyPart   mp = encGen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC).setProvider("SC").build());
         ASN1EncodableVector signedAttrs = generateSignedAttributes();
 
         SMIMESignedGenerator gen = new SMIMESignedGenerator();
     
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("BC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
         gen.addCertificates(certs);
 
         MimeMultipart     smm = gen.generate(mp);
@@ -149,7 +149,7 @@ public class SMIMEMiscTest
 
         MimeMessage       msg = createMimeMessage(tmpFile, smm);
         
-        SMIMESignedParser s = new SMIMESignedParser(new JcaDigestCalculatorProviderBuilder().setProvider("BC").build(), (MimeMultipart)msg.getContent());
+        SMIMESignedParser s = new SMIMESignedParser(new JcaDigestCalculatorProviderBuilder().setProvider("SC").build(), (MimeMultipart)msg.getContent());
 
         certs = s.getCertificates();
 
@@ -178,7 +178,7 @@ public class SMIMEMiscTest
 
         SMIMESignedGenerator gen = new SMIMESignedGenerator();
 
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("BC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
         gen.addCertificates(certs);
 
         MimeMultipart     smm = gen.generate(mp);
@@ -204,13 +204,13 @@ public class SMIMEMiscTest
 
         SMIMEEnvelopedGenerator  encGen = new SMIMEEnvelopedGenerator();
 
-        encGen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(origCert).setProvider("BC"));
+        encGen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(origCert).setProvider("SC"));
 
-        MimeBodyPart   mp = encGen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC).setProvider("BC").build());
+        MimeBodyPart   mp = encGen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC).setProvider("SC").build());
 
         SMIMEEnveloped       env = new SMIMEEnveloped(mp);
         RecipientInformation ri = (RecipientInformation)env.getRecipientInfos().getRecipients().iterator().next();
-        MimeBodyPart         mm = SMIMEUtil.toMimeBodyPart(ri.getContentStream(new JceKeyTransEnvelopedRecipient(origKP.getPrivate()).setProvider("BC")));
+        MimeBodyPart         mm = SMIMEUtil.toMimeBodyPart(ri.getContentStream(new JceKeyTransEnvelopedRecipient(origKP.getPrivate()).setProvider("SC")));
         SMIMESigned          s = new SMIMESigned((MimeMultipart)mm.getContent());
         Collection           c = s.getSignerInfos().getSigners();
         Iterator             it = c.iterator();
@@ -224,7 +224,7 @@ public class SMIMEMiscTest
             Iterator        certIt = certCollection.iterator();
             X509CertificateHolder cert = (X509CertificateHolder)certIt.next();
 
-            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert)));
+            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("SC").build(cert)));
         }
 
         ((FileBackedMimeBodyPart)mm).dispose();
@@ -248,7 +248,7 @@ public class SMIMEMiscTest
 
         SMIMESignedGenerator gen = new SMIMESignedGenerator();
 
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("BC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
         gen.addCertificates(certs);
 
         MimeMultipart     smm = gen.generate(mp);
@@ -256,7 +256,7 @@ public class SMIMEMiscTest
 
         MimeMessage       msg = createMimeMessage(tmpFile, smm);
 
-        SMIMESignedParser s = new SMIMESignedParser(new JcaDigestCalculatorProviderBuilder().setProvider("BC").build(), (MimeMultipart)msg.getContent());
+        SMIMESignedParser s = new SMIMESignedParser(new JcaDigestCalculatorProviderBuilder().setProvider("SC").build(), (MimeMultipart)msg.getContent());
 
         certs = s.getCertificates();
 
@@ -300,7 +300,7 @@ public class SMIMEMiscTest
             Iterator        certIt = certCollection.iterator();
             X509CertificateHolder cert = (X509CertificateHolder)certIt.next();
     
-            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert)));
+            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("SC").build(cert)));
         }
     }
     

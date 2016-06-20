@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.test;
+package org.spongycastle.mail.smime.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -34,37 +34,37 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.bouncycastle.asn1.ASN1EncodableVector;
-import org.bouncycastle.asn1.ASN1OctetString;
-import org.bouncycastle.asn1.DERSet;
-import org.bouncycastle.asn1.cms.Attribute;
-import org.bouncycastle.asn1.cms.AttributeTable;
-import org.bouncycastle.asn1.cms.CMSAttributes;
-import org.bouncycastle.asn1.cms.Time;
-import org.bouncycastle.asn1.cryptopro.CryptoProObjectIdentifiers;
-import org.bouncycastle.asn1.nist.NISTObjectIdentifiers;
-import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
-import org.bouncycastle.asn1.smime.SMIMECapabilitiesAttribute;
-import org.bouncycastle.asn1.smime.SMIMECapability;
-import org.bouncycastle.asn1.smime.SMIMECapabilityVector;
-import org.bouncycastle.asn1.teletrust.TeleTrusTObjectIdentifiers;
-import org.bouncycastle.cert.X509AttributeCertificateHolder;
-import org.bouncycastle.cert.X509CertificateHolder;
-import org.bouncycastle.cert.jcajce.JcaCertStore;
-import org.bouncycastle.cms.DefaultSignedAttributeTableGenerator;
-import org.bouncycastle.cms.SignerInformation;
-import org.bouncycastle.cms.SignerInformationStore;
-import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
-import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.mail.smime.SMIMESigned;
-import org.bouncycastle.mail.smime.SMIMESignedGenerator;
-import org.bouncycastle.mail.smime.SMIMESignedParser;
-import org.bouncycastle.mail.smime.util.CRLFOutputStream;
-import org.bouncycastle.mail.smime.util.FileBackedMimeBodyPart;
-import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
-import org.bouncycastle.util.CollectionStore;
-import org.bouncycastle.util.Store;
+import org.spongycastle.asn1.ASN1EncodableVector;
+import org.spongycastle.asn1.ASN1OctetString;
+import org.spongycastle.asn1.DERSet;
+import org.spongycastle.asn1.cms.Attribute;
+import org.spongycastle.asn1.cms.AttributeTable;
+import org.spongycastle.asn1.cms.CMSAttributes;
+import org.spongycastle.asn1.cms.Time;
+import org.spongycastle.asn1.cryptopro.CryptoProObjectIdentifiers;
+import org.spongycastle.asn1.nist.NISTObjectIdentifiers;
+import org.spongycastle.asn1.pkcs.PKCSObjectIdentifiers;
+import org.spongycastle.asn1.smime.SMIMECapabilitiesAttribute;
+import org.spongycastle.asn1.smime.SMIMECapability;
+import org.spongycastle.asn1.smime.SMIMECapabilityVector;
+import org.spongycastle.asn1.teletrust.TeleTrusTObjectIdentifiers;
+import org.spongycastle.cert.X509AttributeCertificateHolder;
+import org.spongycastle.cert.X509CertificateHolder;
+import org.spongycastle.cert.jcajce.JcaCertStore;
+import org.spongycastle.cms.DefaultSignedAttributeTableGenerator;
+import org.spongycastle.cms.SignerInformation;
+import org.spongycastle.cms.SignerInformationStore;
+import org.spongycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
+import org.spongycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.mail.smime.SMIMESigned;
+import org.spongycastle.mail.smime.SMIMESignedGenerator;
+import org.spongycastle.mail.smime.SMIMESignedParser;
+import org.spongycastle.mail.smime.util.CRLFOutputStream;
+import org.spongycastle.mail.smime.util.FileBackedMimeBodyPart;
+import org.spongycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
+import org.spongycastle.util.CollectionStore;
+import org.spongycastle.util.Store;
 
 public class NewSMIMESignedTest
     extends TestCase
@@ -100,13 +100,13 @@ public class NewSMIMESignedTest
 
     KeyPair         dsaOrigKP;
     X509Certificate dsaOrigCert;
-    private static final String BC = "BC";
+    private static final String BC = "SC";
 
     static
     {
         try
         {
-            if (Security.getProvider("BC") == null)
+            if (Security.getProvider("SC") == null)
             {
                 Security.addProvider(new BouncyCastleProvider());
             }
@@ -761,7 +761,7 @@ public class NewSMIMESignedTest
 
         SMIMESignedGenerator gen = new SMIMESignedGenerator();
 
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("BC").build("SHA1withDSA", dsaOrigKP.getPrivate(), dsaOrigCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").build("SHA1withDSA", dsaOrigKP.getPrivate(), dsaOrigCert));
         gen.addCertificates(certs);
 
         MimeMultipart smm = gen.generate(msg);
@@ -1217,7 +1217,7 @@ public class NewSMIMESignedTest
             X509CertificateHolder certHolder = (X509CertificateHolder)certIt.next();
 
             // in this case the sig is invalid, but it's the lack of an exception from the content digest we're looking for
-            Assert.assertFalse(signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(certHolder)));
+            Assert.assertFalse(signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("SC").build(certHolder)));
         }
     }
 
@@ -1310,7 +1310,7 @@ public class NewSMIMESignedTest
             Iterator        certIt = certCollection.iterator();
             X509CertificateHolder certHolder = (X509CertificateHolder)certIt.next();
 
-            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(certHolder)));
+            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("SC").build(certHolder)));
         }
     }
     

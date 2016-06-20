@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.examples;
+package org.spongycastle.mail.smime.examples;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -26,15 +26,15 @@ import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 import javax.security.auth.x500.X500Principal;
 
-import org.bouncycastle.asn1.ASN1Encodable;
-import org.bouncycastle.asn1.ASN1Encoding;
-import org.bouncycastle.asn1.x509.Extension;
-import org.bouncycastle.cms.SignerInformation;
-import org.bouncycastle.i18n.ErrorBundle;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.mail.smime.validator.SignedMailValidator;
-import org.bouncycastle.x509.PKIXCertPathReviewer;
-import org.bouncycastle.x509.extension.X509ExtensionUtil;
+import org.spongycastle.asn1.ASN1Encodable;
+import org.spongycastle.asn1.ASN1Encoding;
+import org.spongycastle.asn1.x509.Extension;
+import org.spongycastle.cms.SignerInformation;
+import org.spongycastle.i18n.ErrorBundle;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.mail.smime.validator.SignedMailValidator;
+import org.spongycastle.x509.PKIXCertPathReviewer;
+import org.spongycastle.x509.extension.X509ExtensionUtil;
 
 /**
  * An Example that reads a signed mail and validates its signature. Also
@@ -105,7 +105,7 @@ public class ValidateSignedMail
             crls.add(crl);
         }
         CertStore certStore = CertStore.getInstance("Collection",
-                new CollectionCertStoreParameters(crls), "BC");
+                new CollectionCertStoreParameters(crls), "SC");
 
         // add crls and enable revocation checking
         param.addCertStore(certStore);
@@ -124,7 +124,7 @@ public class ValidateSignedMail
 
     static int dbgLvl = DETAIL;
 
-    private static final String RESOURCE_NAME = "org.bouncycastle.mail.smime.validator.SignedMailValidatorMessages";
+    private static final String RESOURCE_NAME = "org.spongycastle.mail.smime.validator.SignedMailValidatorMessages";
 
     public static void verifySignedMail(MimeMessage msg, PKIXParameters param)
             throws Exception
@@ -308,7 +308,7 @@ public class ValidateSignedMail
             InputStream in = new FileInputStream(certfile);
 
             CertificateFactory cf = CertificateFactory.getInstance("X.509",
-                    "BC");
+                    "SC");
             cert = (X509Certificate) cf.generateCertificate(in);
         }
         catch (Exception e)
@@ -328,7 +328,7 @@ public class ValidateSignedMail
             InputStream in = new FileInputStream(crlfile);
 
             CertificateFactory cf = CertificateFactory.getInstance("X.509",
-                    "BC");
+                    "SC");
             crl = (X509CRL) cf.generateCRL(in);
         }
         catch (Exception e)
@@ -343,7 +343,7 @@ public class ValidateSignedMail
     private static TrustAnchor getDummyTrustAnchor() throws Exception
     {
         X500Principal principal = new X500Principal("CN=Dummy Trust Anchor");
-        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", "BC");
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", "SC");
         kpg.initialize(1024, new SecureRandom());
         PublicKey trustPubKey = kpg.generateKeyPair().getPublic();
         return new TrustAnchor(principal, trustPubKey, null);

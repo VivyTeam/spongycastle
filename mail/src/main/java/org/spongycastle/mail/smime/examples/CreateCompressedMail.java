@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.examples;
+package org.spongycastle.mail.smime.examples;
 
 import java.io.FileOutputStream;
 import java.util.Properties;
@@ -10,8 +10,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 
-import org.bouncycastle.cms.jcajce.ZlibCompressor;
-import org.bouncycastle.mail.smime.SMIMECompressedGenerator;
+import org.spongycastle.cms.jcajce.ZlibCompressor;
+import org.spongycastle.mail.smime.SMIMECompressedGenerator;
 
 /**
  * a simple example that creates a single compressed mail message.
