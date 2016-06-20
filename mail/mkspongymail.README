@@ -1,3 +1,4 @@
+0) run become-spongy.sh script on the mail package
 1) create AndroidManifest.xml in mail/src/main/ with
 ^^^^^^^^begin of content^^^^^^^^
 <?xml version="1.0" encoding="utf-8"?>
