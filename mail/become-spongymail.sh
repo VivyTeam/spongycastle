@@ -1,15 +1,11 @@
-0) run become-spongy.sh script on the mail package
-1) create AndroidManifest.xml in mail/src/main/ with
-^^^^^^^^begin of content^^^^^^^^
+cat <<EOF > mail/src/main/AndroidManifest.xml
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.spongycastle">
 </manifest>
-^^^^^^^^end of content ^^^^^^^^
+EOF
 
-
-2) change build.gradle
-^^^^^^^^begin of content ^^^^^^
+cat <<EOF > mail/build.gradle
 apply plugin: 'com.android.library'
 dependencies {
     compile 'com.sun.mail:android-mail:1.5.5'
@@ -37,12 +33,9 @@ android {
         }
     }
 }
-^^^^^^end of content^^^^^^
+EOF
 
-3) In the handler files:
- a) remove 'import java.awt.datatransfer.DataFlavor'
- b) remove replace the java.awt.datatransfer.DataFlavor variables/return types with javax.activation.ActivationDataFlavor
-4) In your android project include this module
-5) build and have fun ;
+find "mail/src/main/java/org/spongycastle/mail/smime/handlers" -type f | xargs -I '{}' ssed -i 's/ DataFlavor/ ActivationDataFlavor/g' '{}'
+find "mail/src/main/java/org/spongycastle/mail/smime/handlers" -type f | xargs -I '{}' ssed -i 's/(DataFlavor/(ActivationDataFlavor/g' '{}'
 
-You can automatically achieve the steps 1-3 by executing become-spongymail.sh
+find "mail/src/main/java/org/spongycastle/mail/smime/handlers" -type f | xargs -I '{}' ssed -i 's/import java.awt.datatransfer.DataFlavor;//g' '{}'
