@@ -43,13 +43,6 @@ configure(subprojects - project(':mail')) {
     task javadocJar(type: Jar, dependsOn: javadoc) {
         classifier = 'javadoc'
         from 'build/docs/javadoc'
-
-        if (JavaVersion.current().isJava8Compatible()) {
-            javadoc {
-                options.addStringOption('-Xdoclint:none')
-            }
-        }
-
     }
 
     task sourcesJar(type: Jar) {
@@ -179,6 +172,14 @@ subprojects {
             classpath "net.saliman:gradle-cobertura-plugin:2.3.2"
         }
     }
+
+    if (JavaVersion.current().isJava8Compatible()) {
+        tasks.withType(Javadoc) {
+            //  tasks.withType(Javadoc).all { enabled = false }
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+
 }
 project(':mail') {
     repositories {
