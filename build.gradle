@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "net.saliman:gradle-cobertura-plugin:2.2.8"
+        classpath "net.saliman:gradle-cobertura-plugin:2.3.2"
     }
 }
 
@@ -185,4 +185,8 @@ project(':mail') {
     repositories {
         jcenter()
     }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.10'
 }
