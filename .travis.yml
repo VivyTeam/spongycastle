@@ -6,10 +6,10 @@ jdk:
 sudo: false
 
 install:
-  - TERM=dumb gradle assemble
+  - TERM=dumb ./gradlew assemble
 
 script:
-  - TERM=dumb gradle check --debug
+  - TERM=dumb ./gradle check --debug
 
 notifications:
   email:
