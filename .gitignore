@@ -1,7 +1,6 @@
 .classpath
 .gradle
 .project
-
 *.class
 *.gen
 *.swp
@@ -11,3 +10,4 @@ build/
 .settings/
 .idea
 *.iml
+local.properties
