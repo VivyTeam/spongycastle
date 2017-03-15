@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.test;
+package org.spongycastle.mail.smime.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,33 +19,33 @@ import java.util.Date;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
-import org.bouncycastle.asn1.cryptopro.CryptoProObjectIdentifiers;
-import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
-import org.bouncycastle.asn1.pkcs.RSAESOAEPparams;
-import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
-import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier;
-import org.bouncycastle.asn1.x509.BasicConstraints;
-import org.bouncycastle.asn1.x509.CRLReason;
-import org.bouncycastle.asn1.x509.Extension;
-import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
-import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.bouncycastle.cert.X509AttributeCertificateHolder;
-import org.bouncycastle.cert.X509ExtensionUtils;
-import org.bouncycastle.cert.X509v1CertificateBuilder;
-import org.bouncycastle.cert.X509v2CRLBuilder;
-import org.bouncycastle.cert.X509v3CertificateBuilder;
-import org.bouncycastle.cert.jcajce.JcaX509CRLConverter;
-import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
-import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
-import org.bouncycastle.cert.jcajce.JcaX509v1CertificateBuilder;
-import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
-import org.bouncycastle.jce.ECGOST3410NamedCurveTable;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.jce.spec.GOST3410ParameterSpec;
-import org.bouncycastle.operator.OperatorCreationException;
-import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.bouncycastle.util.encoders.Base64;
+import org.spongycastle.asn1.cryptopro.CryptoProObjectIdentifiers;
+import org.spongycastle.asn1.pkcs.PKCSObjectIdentifiers;
+import org.spongycastle.asn1.pkcs.RSAESOAEPparams;
+import org.spongycastle.asn1.x500.X500Name;
+import org.spongycastle.asn1.x509.AlgorithmIdentifier;
+import org.spongycastle.asn1.x509.AuthorityKeyIdentifier;
+import org.spongycastle.asn1.x509.BasicConstraints;
+import org.spongycastle.asn1.x509.CRLReason;
+import org.spongycastle.asn1.x509.Extension;
+import org.spongycastle.asn1.x509.SubjectKeyIdentifier;
+import org.spongycastle.asn1.x509.SubjectPublicKeyInfo;
+import org.spongycastle.cert.X509AttributeCertificateHolder;
+import org.spongycastle.cert.X509ExtensionUtils;
+import org.spongycastle.cert.X509v1CertificateBuilder;
+import org.spongycastle.cert.X509v2CRLBuilder;
+import org.spongycastle.cert.X509v3CertificateBuilder;
+import org.spongycastle.cert.jcajce.JcaX509CRLConverter;
+import org.spongycastle.cert.jcajce.JcaX509CertificateConverter;
+import org.spongycastle.cert.jcajce.JcaX509ExtensionUtils;
+import org.spongycastle.cert.jcajce.JcaX509v1CertificateBuilder;
+import org.spongycastle.cert.jcajce.JcaX509v3CertificateBuilder;
+import org.spongycastle.jce.ECGOST3410NamedCurveTable;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.jce.spec.GOST3410ParameterSpec;
+import org.spongycastle.operator.OperatorCreationException;
+import org.spongycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.spongycastle.util.encoders.Base64;
 
 public class CMSTestUtil
 {
@@ -118,18 +118,18 @@ public class CMSTestUtil
 
             rand = new SecureRandom();
 
-            kpg  = KeyPairGenerator.getInstance("RSA", "BC");
+            kpg  = KeyPairGenerator.getInstance("RSA", "SC");
             kpg.initialize(1024, rand);
 
-            kpg  = KeyPairGenerator.getInstance("RSA", "BC");
+            kpg  = KeyPairGenerator.getInstance("RSA", "SC");
             kpg.initialize(1024, rand);
 
-            gostKpg  = KeyPairGenerator.getInstance("GOST3410", "BC");
+            gostKpg  = KeyPairGenerator.getInstance("GOST3410", "SC");
             GOST3410ParameterSpec gost3410P = new GOST3410ParameterSpec(CryptoProObjectIdentifiers.gostR3410_94_CryptoPro_A.getId());
             
             gostKpg.initialize(gost3410P, new SecureRandom());
             
-            dsaKpg = KeyPairGenerator.getInstance("DSA", "BC");
+            dsaKpg = KeyPairGenerator.getInstance("DSA", "SC");
             DSAParameterSpec dsaSpec = new DSAParameterSpec(
                         new BigInteger("7434410770759874867539421675728577177024889699586189000788950934679315164676852047058354758883833299702695428196962057871264685291775577130504050839126673"),
                         new BigInteger("1138656671590261728308283492178581223478058193247"),
@@ -137,35 +137,35 @@ public class CMSTestUtil
 
             dsaKpg.initialize(dsaSpec, new SecureRandom());
 
-            ecGostKpg = KeyPairGenerator.getInstance("ECGOST3410", "BC");
+            ecGostKpg = KeyPairGenerator.getInstance("ECGOST3410", "SC");
             ecGostKpg.initialize(ECGOST3410NamedCurveTable.getParameterSpec("GostR3410-2001-CryptoPro-A"), new SecureRandom());
 
-            ecDsaKpg = KeyPairGenerator.getInstance("ECDSA", "BC");
+            ecDsaKpg = KeyPairGenerator.getInstance("ECDSA", "SC");
             ecDsaKpg.initialize(239, new SecureRandom());
 
-            aes192kg = KeyGenerator.getInstance("AES", "BC");
+            aes192kg = KeyGenerator.getInstance("AES", "SC");
             aes192kg.init(192, rand);
 
-            desede128kg = KeyGenerator.getInstance("DESEDE", "BC");
+            desede128kg = KeyGenerator.getInstance("DESEDE", "SC");
             desede128kg.init(112, rand);
 
-            desede192kg = KeyGenerator.getInstance("DESEDE", "BC");
+            desede192kg = KeyGenerator.getInstance("DESEDE", "SC");
             desede192kg.init(168, rand);
 
-            rc240kg = KeyGenerator.getInstance("RC2", "BC");
+            rc240kg = KeyGenerator.getInstance("RC2", "SC");
             rc240kg.init(40, rand);
             
-            rc264kg = KeyGenerator.getInstance("RC2", "BC");
+            rc264kg = KeyGenerator.getInstance("RC2", "SC");
             rc264kg.init(64, rand);
             
-            rc2128kg = KeyGenerator.getInstance("RC2", "BC");
+            rc2128kg = KeyGenerator.getInstance("RC2", "SC");
             rc2128kg.init(128, rand);
 
-            aesKg = KeyGenerator.getInstance("AES", "BC");
+            aesKg = KeyGenerator.getInstance("AES", "SC");
 
-            seedKg = KeyGenerator.getInstance("SEED", "BC");
+            seedKg = KeyGenerator.getInstance("SEED", "SC");
 
-            camelliaKg = KeyGenerator.getInstance("Camellia", "BC");
+            camelliaKg = KeyGenerator.getInstance("Camellia", "SC");
             
             serialNumber = new BigInteger("1");
         }
@@ -315,7 +315,7 @@ public class CMSTestUtil
 
         JcaContentSignerBuilder contentSignerBuilder = makeContentSignerBuilder(issPub);
 
-        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(v1CertGen.build(contentSignerBuilder.build(issPriv)));
+        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("SC").getCertificate(v1CertGen.build(contentSignerBuilder.build(issPriv)));
 
         _cert.checkValidity(new Date());
         _cert.verify(issPub);
@@ -356,7 +356,7 @@ public class CMSTestUtil
             false,
             new BasicConstraints(_ca));
 
-        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
+        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("SC").getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
 
         _cert.checkValidity(new Date());
         _cert.verify(issPub);
@@ -396,7 +396,7 @@ public class CMSTestUtil
             false,
             new BasicConstraints(false));
 
-        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
+        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("SC").getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
 
         _cert.checkValidity(new Date());
         _cert.verify(issPub);
@@ -437,7 +437,7 @@ public class CMSTestUtil
             false,
             new BasicConstraints(_ca));
 
-        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
+        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("SC").getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
 
         _cert.checkValidity(new Date());
         _cert.verify(issPub);
@@ -487,7 +487,7 @@ public class CMSTestUtil
 
         crlGen.addExtension(Extension.authorityKeyIdentifier, false, extensionUtils.createAuthorityKeyIdentifier(pair.getPublic()));
 
-        return new JcaX509CRLConverter().setProvider("BC").getCRL(crlGen.build(new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider("BC").build(pair.getPrivate())));
+        return new JcaX509CRLConverter().setProvider("SC").getCRL(crlGen.build(new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider("SC").build(pair.getPrivate())));
     }
 
     /*  

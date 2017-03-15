@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.test;
+package org.spongycastle.mail.smime.test;
 
 import java.io.InputStream;
 import java.security.KeyPair;
@@ -31,18 +31,18 @@ import javax.mail.internet.MimeMultipart;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.bouncycastle.asn1.ASN1Encodable;
-import org.bouncycastle.asn1.ASN1Encoding;
-import org.bouncycastle.asn1.x509.X509Extension;
-import org.bouncycastle.cert.jcajce.JcaCertStore;
-import org.bouncycastle.cms.SignerInformation;
-import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
-import org.bouncycastle.i18n.ErrorBundle;
-import org.bouncycastle.mail.smime.SMIMESignedGenerator;
-import org.bouncycastle.mail.smime.validator.SignedMailValidator;
-import org.bouncycastle.util.Store;
-import org.bouncycastle.x509.PKIXCertPathReviewer;
-import org.bouncycastle.x509.extension.X509ExtensionUtil;
+import org.spongycastle.asn1.ASN1Encodable;
+import org.spongycastle.asn1.ASN1Encoding;
+import org.spongycastle.asn1.x509.X509Extension;
+import org.spongycastle.cert.jcajce.JcaCertStore;
+import org.spongycastle.cms.SignerInformation;
+import org.spongycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
+import org.spongycastle.i18n.ErrorBundle;
+import org.spongycastle.mail.smime.SMIMESignedGenerator;
+import org.spongycastle.mail.smime.validator.SignedMailValidator;
+import org.spongycastle.util.Store;
+import org.spongycastle.x509.PKIXCertPathReviewer;
+import org.spongycastle.x509.extension.X509ExtensionUtil;
 
 public class SignedMailValidatorTest extends TestCase
 {
@@ -222,7 +222,7 @@ public class SignedMailValidatorTest extends TestCase
 
         SMIMESignedGenerator gen = new SMIMESignedGenerator();
 
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("BC").build("SHA1withRSA", signKP.getPrivate(), signCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").build("SHA1withRSA", signKP.getPrivate(), signCert));
         gen.addCertificates(certs);
 
         MimeMultipart signedMsg = gen.generate(baseMsg);
@@ -432,7 +432,7 @@ public class SignedMailValidatorTest extends TestCase
         X509Certificate cert = null;
         InputStream in = getClass().getResourceAsStream(certfile);
 
-        CertificateFactory cf = CertificateFactory.getInstance("X.509", "BC");
+        CertificateFactory cf = CertificateFactory.getInstance("X.509", "SC");
         cert = (X509Certificate) cf.generateCertificate(in);
         return cert;
     }
@@ -442,17 +442,17 @@ public class SignedMailValidatorTest extends TestCase
         X509CRL crl = null;
         InputStream in = this.getClass().getResourceAsStream(crlfile);
         
-        CertificateFactory cf = CertificateFactory.getInstance("x.509", "BC");
+        CertificateFactory cf = CertificateFactory.getInstance("x.509", "SC");
         crl = (X509CRL) cf.generateCRL(in);
         return crl;
     }
 
     public void setUp()
     {
-        if (Security.getProvider("BC") == null)
+        if (Security.getProvider("SC") == null)
         {
             Security
-                    .addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+                    .addProvider(new org.spongycastle.jce.provider.BouncyCastleProvider());
         }
     }
     

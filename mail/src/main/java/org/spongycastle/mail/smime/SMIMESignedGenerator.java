@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime;
+package org.spongycastle.mail.smime;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,21 +23,21 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.asn1.cryptopro.CryptoProObjectIdentifiers;
-import org.bouncycastle.asn1.nist.NISTObjectIdentifiers;
-import org.bouncycastle.asn1.oiw.OIWObjectIdentifiers;
-import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
-import org.bouncycastle.asn1.teletrust.TeleTrusTObjectIdentifiers;
-import org.bouncycastle.asn1.x9.X9ObjectIdentifiers;
-import org.bouncycastle.cms.CMSAlgorithm;
-import org.bouncycastle.cms.CMSException;
-import org.bouncycastle.cms.CMSSignedDataStreamGenerator;
-import org.bouncycastle.cms.SignerInfoGenerator;
-import org.bouncycastle.cms.SignerInformation;
-import org.bouncycastle.cms.SignerInformationStore;
-import org.bouncycastle.mail.smime.util.CRLFOutputStream;
-import org.bouncycastle.util.Store;
+import org.spongycastle.asn1.ASN1ObjectIdentifier;
+import org.spongycastle.asn1.cryptopro.CryptoProObjectIdentifiers;
+import org.spongycastle.asn1.nist.NISTObjectIdentifiers;
+import org.spongycastle.asn1.oiw.OIWObjectIdentifiers;
+import org.spongycastle.asn1.pkcs.PKCSObjectIdentifiers;
+import org.spongycastle.asn1.teletrust.TeleTrusTObjectIdentifiers;
+import org.spongycastle.asn1.x9.X9ObjectIdentifiers;
+import org.spongycastle.cms.CMSAlgorithm;
+import org.spongycastle.cms.CMSException;
+import org.spongycastle.cms.CMSSignedDataStreamGenerator;
+import org.spongycastle.cms.SignerInfoGenerator;
+import org.spongycastle.cms.SignerInformation;
+import org.spongycastle.cms.SignerInformationStore;
+import org.spongycastle.mail.smime.util.CRLFOutputStream;
+import org.spongycastle.util.Store;
 
 /**
  * general class for generating a pkcs7-signature message.
@@ -56,7 +56,7 @@ import org.bouncycastle.util.Store;
  *
  *      SMIMESignedGenerator gen = new SMIMESignedGenerator();
  *
- *      gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("BC").build("SHA1withRSA", signKP.getPrivate(), signCert));
+ *      gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").build("SHA1withRSA", signKP.getPrivate(), signCert));
  *
  *      gen.addCertificates(certs);
  *
@@ -106,11 +106,11 @@ public class SMIMESignedGenerator
 
     private static MailcapCommandMap addCommands(MailcapCommandMap mc)
     {
-        mc.addMailcap("application/pkcs7-signature;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.pkcs7_signature");
-        mc.addMailcap("application/pkcs7-mime;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.pkcs7_mime");
-        mc.addMailcap("application/x-pkcs7-signature;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.x_pkcs7_signature");
-        mc.addMailcap("application/x-pkcs7-mime;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.x_pkcs7_mime");
-        mc.addMailcap("multipart/signed;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.multipart_signed");
+        mc.addMailcap("application/pkcs7-signature;; x-java-content-handler=org.spongycastle.mail.smime.handlers.pkcs7_signature");
+        mc.addMailcap("application/pkcs7-mime;; x-java-content-handler=org.spongycastle.mail.smime.handlers.pkcs7_mime");
+        mc.addMailcap("application/x-pkcs7-signature;; x-java-content-handler=org.spongycastle.mail.smime.handlers.x_pkcs7_signature");
+        mc.addMailcap("application/x-pkcs7-mime;; x-java-content-handler=org.spongycastle.mail.smime.handlers.x_pkcs7_mime");
+        mc.addMailcap("multipart/signed;; x-java-content-handler=org.spongycastle.mail.smime.handlers.multipart_signed");
 
         return mc;
     }

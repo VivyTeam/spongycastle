@@ -1,17 +1,35 @@
+apply plugin: 'com.android.library'
 dependencies {
+    testCompile 'junit:junit:4.12'
     compile project(':core')
     compile project(':pkix')
     compile project(':prov')
-
-    compile group: 'javax.mail', name: 'mail', version: '1.4'
+    compile 'com.sun.mail:android-mail:1.5.5'
+    compile 'com.sun.mail:android:1.5.5'
 }
 
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
 cobertura {
-   coverageDirs = [
-       "${rootProject.projectDir}/core/build/classes/main",
-       "${rootProject.projectDir}/prov/build/classes/main",
-       "${rootProject.projectDir}/pkix/build/classes/main",
-       "${rootProject.projectDir}/mail/build/classes/main"
-  ] 
+    coverageDirs = [
+            "${rootProject.projectDir}/core/build/classes/main",
+            "${rootProject.projectDir}/prov/build/classes/main",
+            "${rootProject.projectDir}/pkix/build/classes/main",
+            "${rootProject.projectDir}/mail/build/classes/main"
+    ]
 }
-

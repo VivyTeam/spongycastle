@@ -1,6 +1,5 @@
-package org.bouncycastle.mail.smime.handlers;
+package org.spongycastle.mail.smime.handlers;
 
-import java.awt.datatransfer.DataFlavor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,12 +21,12 @@ public class x_pkcs7_signature
      */ 
     
     private static final ActivationDataFlavor ADF;
-    private static final DataFlavor[]         ADFs;
+    private static final ActivationDataFlavor[]         ADFs;
     
     static 
     {
         ADF  = new ActivationDataFlavor(MimeBodyPart.class, "application/x-pkcs7-signature", "Signature");
-        ADFs = new DataFlavor[] { ADF };
+        ADFs = new ActivationDataFlavor[] { ADF };
     }
     
     public Object getContent(DataSource _ds) 
@@ -36,7 +35,7 @@ public class x_pkcs7_signature
         return _ds.getInputStream();
     }
     
-    public Object getTransferData(DataFlavor _df, DataSource _ds) 
+    public Object getTransferData(ActivationDataFlavor _df, DataSource _ds)
         throws IOException 
     {    
         if (ADF.equals(_df)) 
@@ -49,7 +48,7 @@ public class x_pkcs7_signature
         }
     }
     
-    public DataFlavor[] getTransferDataFlavors() 
+    public ActivationDataFlavor[] getTransferDataFlavors() 
     {
         return ADFs;
     }

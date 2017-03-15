@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.examples;
+package org.spongycastle.mail.smime.examples;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -23,25 +23,25 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.bouncycastle.asn1.ASN1EncodableVector;
-import org.bouncycastle.asn1.cms.AttributeTable;
-import org.bouncycastle.asn1.cms.IssuerAndSerialNumber;
-import org.bouncycastle.asn1.smime.SMIMECapabilitiesAttribute;
-import org.bouncycastle.asn1.smime.SMIMECapability;
-import org.bouncycastle.asn1.smime.SMIMECapabilityVector;
-import org.bouncycastle.asn1.smime.SMIMEEncryptionKeyPreferenceAttribute;
-import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.cert.jcajce.JcaCertStore;
-import org.bouncycastle.cms.CMSAlgorithm;
-import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
-import org.bouncycastle.cms.jcajce.JceCMSContentEncryptorBuilder;
-import org.bouncycastle.cms.jcajce.JceKeyTransRecipientInfoGenerator;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.mail.smime.SMIMEEnvelopedGenerator;
-import org.bouncycastle.mail.smime.SMIMEException;
-import org.bouncycastle.mail.smime.SMIMESignedGenerator;
-import org.bouncycastle.util.Store;
-import org.bouncycastle.util.Strings;
+import org.spongycastle.asn1.ASN1EncodableVector;
+import org.spongycastle.asn1.cms.AttributeTable;
+import org.spongycastle.asn1.cms.IssuerAndSerialNumber;
+import org.spongycastle.asn1.smime.SMIMECapabilitiesAttribute;
+import org.spongycastle.asn1.smime.SMIMECapability;
+import org.spongycastle.asn1.smime.SMIMECapabilityVector;
+import org.spongycastle.asn1.smime.SMIMEEncryptionKeyPreferenceAttribute;
+import org.spongycastle.asn1.x500.X500Name;
+import org.spongycastle.cert.jcajce.JcaCertStore;
+import org.spongycastle.cms.CMSAlgorithm;
+import org.spongycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
+import org.spongycastle.cms.jcajce.JceCMSContentEncryptorBuilder;
+import org.spongycastle.cms.jcajce.JceKeyTransRecipientInfoGenerator;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.mail.smime.SMIMEEnvelopedGenerator;
+import org.spongycastle.mail.smime.SMIMEException;
+import org.spongycastle.mail.smime.SMIMESignedGenerator;
+import org.spongycastle.util.Store;
+import org.spongycastle.util.Strings;
 
 /**
  * Example that sends a signed and encrypted mail message.
@@ -63,15 +63,15 @@ public class SendSignedAndEncryptedMail
                     .getDefaultCommandMap();
 
             mailcap
-                    .addMailcap("application/pkcs7-signature;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.pkcs7_signature");
+                    .addMailcap("application/pkcs7-signature;; x-java-content-handler=org.spongycastle.mail.smime.handlers.pkcs7_signature");
             mailcap
-                    .addMailcap("application/pkcs7-mime;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.pkcs7_mime");
+                    .addMailcap("application/pkcs7-mime;; x-java-content-handler=org.spongycastle.mail.smime.handlers.pkcs7_mime");
             mailcap
-                    .addMailcap("application/x-pkcs7-signature;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.x_pkcs7_signature");
+                    .addMailcap("application/x-pkcs7-signature;; x-java-content-handler=org.spongycastle.mail.smime.handlers.x_pkcs7_signature");
             mailcap
-                    .addMailcap("application/x-pkcs7-mime;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.x_pkcs7_mime");
+                    .addMailcap("application/x-pkcs7-mime;; x-java-content-handler=org.spongycastle.mail.smime.handlers.x_pkcs7_mime");
             mailcap
-                    .addMailcap("multipart/signed;; x-java-content-handler=org.bouncycastle.mail.smime.handlers.multipart_signed");
+                    .addMailcap("multipart/signed;; x-java-content-handler=org.spongycastle.mail.smime.handlers.multipart_signed");
 
             CommandMap.setDefaultCommandMap(mailcap);
 
@@ -79,7 +79,7 @@ public class SendSignedAndEncryptedMail
             Security.addProvider(new BouncyCastleProvider());
 
             /* Open the keystore */
-            KeyStore keystore = KeyStore.getInstance("PKCS12", "BC");
+            KeyStore keystore = KeyStore.getInstance("PKCS12", "SC");
             keystore.load(new FileInputStream(args[0]), args[1].toCharArray());
             Certificate[] chain = keystore.getCertificateChain(args[2]);
 
@@ -120,7 +120,7 @@ public class SendSignedAndEncryptedMail
             attributes.add(new SMIMECapabilitiesAttribute(capabilities));
 
             SMIMESignedGenerator signer = new SMIMESignedGenerator();
-            signer.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("BC").setSignedAttributeGenerator(new AttributeTable(attributes)).build("DSA".equals(privateKey.getAlgorithm()) ? "SHA1withDSA" : "MD5withRSA", privateKey, (X509Certificate)chain[0]));
+            signer.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").setSignedAttributeGenerator(new AttributeTable(attributes)).build("DSA".equals(privateKey.getAlgorithm()) ? "SHA1withDSA" : "MD5withRSA", privateKey, (X509Certificate)chain[0]));
 
 
             /* Add the list of certs to the generator */
@@ -146,11 +146,11 @@ public class SendSignedAndEncryptedMail
 
             /* Create the encrypter */
             SMIMEEnvelopedGenerator encrypter = new SMIMEEnvelopedGenerator();
-            encrypter.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator((X509Certificate)chain[0]).setProvider("BC"));
+            encrypter.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator((X509Certificate)chain[0]).setProvider("SC"));
 
             /* Encrypt the message */
             MimeBodyPart encryptedPart = encrypter.generate(signedMessage,
-                    new JceCMSContentEncryptorBuilder(CMSAlgorithm.RC2_CBC).setProvider("BC").build());
+                    new JceCMSContentEncryptorBuilder(CMSAlgorithm.RC2_CBC).setProvider("SC").build());
 
             /*
              * Create a new MimeMessage that contains the encrypted and signed

@@ -1,4 +1,9 @@
-language: java
+language: android
+android: 
+  components:
+    - platform-tools
+    - build-tools-23.0.1
+    - android-23
 
 jdk:
   - openjdk7
@@ -6,10 +11,10 @@ jdk:
 sudo: false
 
 install:
-  - TERM=dumb gradle assemble
+  - TERM=dumb ./gradlew assemble
 
 script:
-  - TERM=dumb gradle check --debug
+  - TERM=dumb ./gradlew check --debug
 
 notifications:
   email:

@@ -1,4 +1,4 @@
-package org.bouncycastle.mail.smime.test;
+package org.spongycastle.mail.smime.test;
 
 import java.security.Security;
 
@@ -6,7 +6,7 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 public class AllTests
     extends TestCase
@@ -47,7 +47,7 @@ public class AllTests
 
         protected void tearDown()
         {
-            Security.removeProvider("BC");
+            Security.removeProvider("SC");
         }
     }
 }
