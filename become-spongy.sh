@@ -65,5 +65,15 @@ find "mail/src/main/java/org/spongycastle/mail/smime/handlers" -type f | xargs -
 find "mail/src/main/java/org/spongycastle/mail/smime/handlers" -type f | xargs -I '{}' ssed -i 's/(DataFlavor/(ActivationDataFlavor/g' '{}'
 find "mail/src/main/java/org/spongycastle/mail/smime/handlers" -type f | xargs -I '{}' ssed -i 's/import java.awt.datatransfer.DataFlavor;//g' '{}'
     
+sed -i 's~new SerialisationTest()~// new SerialisationTest() // Attempts to deserialise a org.bouncycastle class~g' prov/src/test/jdk1.4/org/spongycastle/jce/provider/test/RegressionTest.java
+sed -i 's~new SerialisationTest(),~// new SerialisationTest(), // Attempts to deserialise a org.bouncycastle class~g' prov/src/test/java/org/spongycastle/jce/provider/test/RegressionTest.java
 
+sed -i 's/"SC", /"BC", /g' prov/src/main/java/org/spongycastle/jce/provider/BouncyCastleProvider.java
 
+cat <<EOF >> .gitignore 
+.idea
+*.iml
+*.asc
+
+pg/*.asc
+EOF
