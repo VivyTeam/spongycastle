@@ -196,7 +196,6 @@ project(':mail') {
     repositories {
         jcenter()
         google()
-        url "https://maven.java.net/content/groups/public/"
         mavenCentral()
     }
 }
