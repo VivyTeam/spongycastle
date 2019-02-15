@@ -1,8 +1,5 @@
-plugins {
-    id "com.github.dcendents.android-maven" version "2.1"
-}
-
 apply plugin: 'com.android.library'
+
 
 dependencies {
     testImplementation "junit:junit:4.12"
@@ -37,4 +34,14 @@ cobertura {
             "${rootProject.projectDir}/pkix/build/classes/main",
             "${rootProject.projectDir}/mail/build/classes/main"
     ]
+}
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.3.1'
+    }
 }
