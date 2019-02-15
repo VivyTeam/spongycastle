@@ -83,10 +83,8 @@ public class SMIMEMiscTest
     {
         try
         {
-            if (Security.getProvider("SC") == null)
-            {
-                Security.addProvider(new BouncyCastleProvider());
-            }
+
+            Security.addProvider(new BouncyCastleProvider());
 
             msg      = SMIMETestUtil.makeMimeBodyPart("Hello world!\n");
             
@@ -134,14 +132,14 @@ public class SMIMEMiscTest
     
         SMIMEEnvelopedGenerator  encGen = new SMIMEEnvelopedGenerator();
         
-        encGen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(origCert).setProvider("SC"));
+        encGen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(origCert).setProvider(new BouncyCastleProvider()));
 
-        MimeBodyPart   mp = encGen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC).setProvider("SC").build());
+        MimeBodyPart   mp = encGen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC).setProvider(new BouncyCastleProvider()).build());
         ASN1EncodableVector signedAttrs = generateSignedAttributes();
 
         SMIMESignedGenerator gen = new SMIMESignedGenerator();
     
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider(new BouncyCastleProvider()).setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
         gen.addCertificates(certs);
 
         MimeMultipart     smm = gen.generate(mp);
@@ -149,7 +147,7 @@ public class SMIMEMiscTest
 
         MimeMessage       msg = createMimeMessage(tmpFile, smm);
         
-        SMIMESignedParser s = new SMIMESignedParser(new JcaDigestCalculatorProviderBuilder().setProvider("SC").build(), (MimeMultipart)msg.getContent());
+        SMIMESignedParser s = new SMIMESignedParser(new JcaDigestCalculatorProviderBuilder().setProvider(new BouncyCastleProvider()).build(), (MimeMultipart)msg.getContent());
 
         certs = s.getCertificates();
 
@@ -178,7 +176,7 @@ public class SMIMEMiscTest
 
         SMIMESignedGenerator gen = new SMIMESignedGenerator();
 
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider(new BouncyCastleProvider()).setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
         gen.addCertificates(certs);
 
         MimeMultipart     smm = gen.generate(mp);
@@ -204,13 +202,13 @@ public class SMIMEMiscTest
 
         SMIMEEnvelopedGenerator  encGen = new SMIMEEnvelopedGenerator();
 
-        encGen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(origCert).setProvider("SC"));
+        encGen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator(origCert).setProvider(new BouncyCastleProvider()));
 
-        MimeBodyPart   mp = encGen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC).setProvider("SC").build());
+        MimeBodyPart   mp = encGen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC).setProvider(new BouncyCastleProvider()).build());
 
         SMIMEEnveloped       env = new SMIMEEnveloped(mp);
         RecipientInformation ri = (RecipientInformation)env.getRecipientInfos().getRecipients().iterator().next();
-        MimeBodyPart         mm = SMIMEUtil.toMimeBodyPart(ri.getContentStream(new JceKeyTransEnvelopedRecipient(origKP.getPrivate()).setProvider("SC")));
+        MimeBodyPart         mm = SMIMEUtil.toMimeBodyPart(ri.getContentStream(new JceKeyTransEnvelopedRecipient(origKP.getPrivate()).setProvider(new BouncyCastleProvider())));
         SMIMESigned          s = new SMIMESigned((MimeMultipart)mm.getContent());
         Collection           c = s.getSignerInfos().getSigners();
         Iterator             it = c.iterator();
@@ -224,7 +222,7 @@ public class SMIMEMiscTest
             Iterator        certIt = certCollection.iterator();
             X509CertificateHolder cert = (X509CertificateHolder)certIt.next();
 
-            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("SC").build(cert)));
+            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider(new BouncyCastleProvider()).build(cert)));
         }
 
         ((FileBackedMimeBodyPart)mm).dispose();
@@ -248,7 +246,7 @@ public class SMIMEMiscTest
 
         SMIMESignedGenerator gen = new SMIMESignedGenerator();
 
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider(new BouncyCastleProvider()).setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA256withRSA", origKP.getPrivate(), origCert));
         gen.addCertificates(certs);
 
         MimeMultipart     smm = gen.generate(mp);
@@ -256,7 +254,7 @@ public class SMIMEMiscTest
 
         MimeMessage       msg = createMimeMessage(tmpFile, smm);
 
-        SMIMESignedParser s = new SMIMESignedParser(new JcaDigestCalculatorProviderBuilder().setProvider("SC").build(), (MimeMultipart)msg.getContent());
+        SMIMESignedParser s = new SMIMESignedParser(new JcaDigestCalculatorProviderBuilder().setProvider(new BouncyCastleProvider()).build(), (MimeMultipart)msg.getContent());
 
         certs = s.getCertificates();
 
@@ -300,7 +298,7 @@ public class SMIMEMiscTest
             Iterator        certIt = certCollection.iterator();
             X509CertificateHolder cert = (X509CertificateHolder)certIt.next();
     
-            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("SC").build(cert)));
+            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider(new BouncyCastleProvider()).build(cert)));
         }
     }
     

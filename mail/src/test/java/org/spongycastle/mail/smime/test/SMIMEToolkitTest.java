@@ -92,10 +92,8 @@ public class SMIMEToolkitTest
     {
         try
         {
-            if (Security.getProvider("SC") == null)
-            {
-                Security.addProvider(new BouncyCastleProvider());
-            }
+
+            Security.addProvider(new BouncyCastleProvider());
 
             msg      = SMIMETestUtil.makeMimeBodyPart("Hello world!\n");
 

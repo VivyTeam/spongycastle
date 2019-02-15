@@ -19,6 +19,7 @@ import javax.mail.internet.MimeMessage;
 import org.spongycastle.cms.CMSAlgorithm;
 import org.spongycastle.cms.jcajce.JceCMSContentEncryptorBuilder;
 import org.spongycastle.cms.jcajce.JceKeyTransRecipientInfoGenerator;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.mail.smime.SMIMEEnvelopedGenerator;
 
 /**
@@ -48,7 +49,7 @@ public class CreateLargeEncryptedMail
         //
         // Open the key store
         //
-        KeyStore    ks = KeyStore.getInstance("PKCS12", "SC");
+        KeyStore    ks = KeyStore.getInstance("PKCS12", new BouncyCastleProvider());
         String      keyAlias = ExampleUtils.findKeyAlias(ks, args[0], args[1].toCharArray());
 
         Certificate[]   chain = ks.getCertificateChain(keyAlias);
@@ -58,7 +59,7 @@ public class CreateLargeEncryptedMail
         //
         SMIMEEnvelopedGenerator  gen = new SMIMEEnvelopedGenerator();
           
-        gen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator((X509Certificate)chain[0]).setProvider("SC"));
+        gen.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator((X509Certificate)chain[0]).setProvider(new BouncyCastleProvider()));
 
         //
         // create a subject key id - this has to be done the same way as
@@ -82,7 +83,7 @@ public class CreateLargeEncryptedMail
         msg.setHeader("Content-Type", "application/octet-stream");
         msg.setHeader("Content-Transfer-Encoding", "binary");
 
-        MimeBodyPart mp = gen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.RC2_CBC).setProvider("SC").build());
+        MimeBodyPart mp = gen.generate(msg, new JceCMSContentEncryptorBuilder(CMSAlgorithm.RC2_CBC).setProvider(new BouncyCastleProvider()).build());
         
         //
         // Get a Session object and create the mail message

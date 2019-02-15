@@ -79,7 +79,7 @@ public class SendSignedAndEncryptedMail
             Security.addProvider(new BouncyCastleProvider());
 
             /* Open the keystore */
-            KeyStore keystore = KeyStore.getInstance("PKCS12", "SC");
+            KeyStore keystore = KeyStore.getInstance("PKCS12", new BouncyCastleProvider());
             keystore.load(new FileInputStream(args[0]), args[1].toCharArray());
             Certificate[] chain = keystore.getCertificateChain(args[2]);
 
@@ -120,7 +120,7 @@ public class SendSignedAndEncryptedMail
             attributes.add(new SMIMECapabilitiesAttribute(capabilities));
 
             SMIMESignedGenerator signer = new SMIMESignedGenerator();
-            signer.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").setSignedAttributeGenerator(new AttributeTable(attributes)).build("DSA".equals(privateKey.getAlgorithm()) ? "SHA1withDSA" : "MD5withRSA", privateKey, (X509Certificate)chain[0]));
+            signer.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider(new BouncyCastleProvider()).setSignedAttributeGenerator(new AttributeTable(attributes)).build("DSA".equals(privateKey.getAlgorithm()) ? "SHA1withDSA" : "MD5withRSA", privateKey, (X509Certificate)chain[0]));
 
 
             /* Add the list of certs to the generator */
@@ -146,11 +146,11 @@ public class SendSignedAndEncryptedMail
 
             /* Create the encrypter */
             SMIMEEnvelopedGenerator encrypter = new SMIMEEnvelopedGenerator();
-            encrypter.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator((X509Certificate)chain[0]).setProvider("SC"));
+            encrypter.addRecipientInfoGenerator(new JceKeyTransRecipientInfoGenerator((X509Certificate)chain[0]).setProvider(new BouncyCastleProvider()));
 
             /* Encrypt the message */
             MimeBodyPart encryptedPart = encrypter.generate(signedMessage,
-                    new JceCMSContentEncryptorBuilder(CMSAlgorithm.RC2_CBC).setProvider("SC").build());
+                    new JceCMSContentEncryptorBuilder(CMSAlgorithm.RC2_CBC).setProvider(new BouncyCastleProvider()).build());
 
             /*
              * Create a new MimeMessage that contains the encrypted and signed

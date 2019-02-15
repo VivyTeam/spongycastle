@@ -38,6 +38,7 @@ import org.spongycastle.cert.jcajce.JcaCertStore;
 import org.spongycastle.cms.SignerInformation;
 import org.spongycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
 import org.spongycastle.i18n.ErrorBundle;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.mail.smime.SMIMESignedGenerator;
 import org.spongycastle.mail.smime.validator.SignedMailValidator;
 import org.spongycastle.util.Store;
@@ -222,7 +223,7 @@ public class SignedMailValidatorTest extends TestCase
 
         SMIMESignedGenerator gen = new SMIMESignedGenerator();
 
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").build("SHA1withRSA", signKP.getPrivate(), signCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider(new BouncyCastleProvider()).build("SHA1withRSA", signKP.getPrivate(), signCert));
         gen.addCertificates(certs);
 
         MimeMultipart signedMsg = gen.generate(baseMsg);
@@ -432,7 +433,7 @@ public class SignedMailValidatorTest extends TestCase
         X509Certificate cert = null;
         InputStream in = getClass().getResourceAsStream(certfile);
 
-        CertificateFactory cf = CertificateFactory.getInstance("X.509", "SC");
+        CertificateFactory cf = CertificateFactory.getInstance("X.509", new BouncyCastleProvider());
         cert = (X509Certificate) cf.generateCertificate(in);
         return cert;
     }
@@ -442,18 +443,16 @@ public class SignedMailValidatorTest extends TestCase
         X509CRL crl = null;
         InputStream in = this.getClass().getResourceAsStream(crlfile);
         
-        CertificateFactory cf = CertificateFactory.getInstance("x.509", "SC");
+        CertificateFactory cf = CertificateFactory.getInstance("x.509", new BouncyCastleProvider());
         crl = (X509CRL) cf.generateCRL(in);
         return crl;
     }
 
     public void setUp()
     {
-        if (Security.getProvider("SC") == null)
-        {
-            Security
-                    .addProvider(new org.spongycastle.jce.provider.BouncyCastleProvider());
-        }
+        Security
+            .addProvider(new org.spongycastle.jce.provider.BouncyCastleProvider());
+
     }
     
     public static void main(String[] args) throws Exception

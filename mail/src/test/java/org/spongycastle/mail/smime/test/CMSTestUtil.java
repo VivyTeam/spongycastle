@@ -118,18 +118,18 @@ public class CMSTestUtil
 
             rand = new SecureRandom();
 
-            kpg  = KeyPairGenerator.getInstance("RSA", "SC");
+            kpg  = KeyPairGenerator.getInstance("RSA", new BouncyCastleProvider());
             kpg.initialize(1024, rand);
 
-            kpg  = KeyPairGenerator.getInstance("RSA", "SC");
+            kpg  = KeyPairGenerator.getInstance("RSA", new BouncyCastleProvider());
             kpg.initialize(1024, rand);
 
-            gostKpg  = KeyPairGenerator.getInstance("GOST3410", "SC");
+            gostKpg  = KeyPairGenerator.getInstance("GOST3410", new BouncyCastleProvider());
             GOST3410ParameterSpec gost3410P = new GOST3410ParameterSpec(CryptoProObjectIdentifiers.gostR3410_94_CryptoPro_A.getId());
             
             gostKpg.initialize(gost3410P, new SecureRandom());
             
-            dsaKpg = KeyPairGenerator.getInstance("DSA", "SC");
+            dsaKpg = KeyPairGenerator.getInstance("DSA", new BouncyCastleProvider());
             DSAParameterSpec dsaSpec = new DSAParameterSpec(
                         new BigInteger("7434410770759874867539421675728577177024889699586189000788950934679315164676852047058354758883833299702695428196962057871264685291775577130504050839126673"),
                         new BigInteger("1138656671590261728308283492178581223478058193247"),
@@ -137,35 +137,35 @@ public class CMSTestUtil
 
             dsaKpg.initialize(dsaSpec, new SecureRandom());
 
-            ecGostKpg = KeyPairGenerator.getInstance("ECGOST3410", "SC");
+            ecGostKpg = KeyPairGenerator.getInstance("ECGOST3410", new BouncyCastleProvider());
             ecGostKpg.initialize(ECGOST3410NamedCurveTable.getParameterSpec("GostR3410-2001-CryptoPro-A"), new SecureRandom());
 
-            ecDsaKpg = KeyPairGenerator.getInstance("ECDSA", "SC");
+            ecDsaKpg = KeyPairGenerator.getInstance("ECDSA", new BouncyCastleProvider());
             ecDsaKpg.initialize(239, new SecureRandom());
 
-            aes192kg = KeyGenerator.getInstance("AES", "SC");
+            aes192kg = KeyGenerator.getInstance("AES", new BouncyCastleProvider());
             aes192kg.init(192, rand);
 
-            desede128kg = KeyGenerator.getInstance("DESEDE", "SC");
+            desede128kg = KeyGenerator.getInstance("DESEDE", new BouncyCastleProvider());
             desede128kg.init(112, rand);
 
-            desede192kg = KeyGenerator.getInstance("DESEDE", "SC");
+            desede192kg = KeyGenerator.getInstance("DESEDE", new BouncyCastleProvider());
             desede192kg.init(168, rand);
 
-            rc240kg = KeyGenerator.getInstance("RC2", "SC");
+            rc240kg = KeyGenerator.getInstance("RC2", new BouncyCastleProvider());
             rc240kg.init(40, rand);
             
-            rc264kg = KeyGenerator.getInstance("RC2", "SC");
+            rc264kg = KeyGenerator.getInstance("RC2", new BouncyCastleProvider());
             rc264kg.init(64, rand);
             
-            rc2128kg = KeyGenerator.getInstance("RC2", "SC");
+            rc2128kg = KeyGenerator.getInstance("RC2", new BouncyCastleProvider());
             rc2128kg.init(128, rand);
 
-            aesKg = KeyGenerator.getInstance("AES", "SC");
+            aesKg = KeyGenerator.getInstance("AES", new BouncyCastleProvider());
 
-            seedKg = KeyGenerator.getInstance("SEED", "SC");
+            seedKg = KeyGenerator.getInstance("SEED", new BouncyCastleProvider());
 
-            camelliaKg = KeyGenerator.getInstance("Camellia", "SC");
+            camelliaKg = KeyGenerator.getInstance("Camellia", new BouncyCastleProvider());
             
             serialNumber = new BigInteger("1");
         }
@@ -315,7 +315,7 @@ public class CMSTestUtil
 
         JcaContentSignerBuilder contentSignerBuilder = makeContentSignerBuilder(issPub);
 
-        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("SC").getCertificate(v1CertGen.build(contentSignerBuilder.build(issPriv)));
+        X509Certificate _cert = new JcaX509CertificateConverter().setProvider(new BouncyCastleProvider()).getCertificate(v1CertGen.build(contentSignerBuilder.build(issPriv)));
 
         _cert.checkValidity(new Date());
         _cert.verify(issPub);
@@ -356,7 +356,7 @@ public class CMSTestUtil
             false,
             new BasicConstraints(_ca));
 
-        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("SC").getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
+        X509Certificate _cert = new JcaX509CertificateConverter().setProvider(new BouncyCastleProvider()).getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
 
         _cert.checkValidity(new Date());
         _cert.verify(issPub);
@@ -396,7 +396,7 @@ public class CMSTestUtil
             false,
             new BasicConstraints(false));
 
-        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("SC").getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
+        X509Certificate _cert = new JcaX509CertificateConverter().setProvider(new BouncyCastleProvider()).getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
 
         _cert.checkValidity(new Date());
         _cert.verify(issPub);
@@ -437,7 +437,7 @@ public class CMSTestUtil
             false,
             new BasicConstraints(_ca));
 
-        X509Certificate _cert = new JcaX509CertificateConverter().setProvider("SC").getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
+        X509Certificate _cert = new JcaX509CertificateConverter().setProvider(new BouncyCastleProvider()).getCertificate(v3CertGen.build(contentSignerBuilder.build(issPriv)));
 
         _cert.checkValidity(new Date());
         _cert.verify(issPub);
@@ -487,7 +487,7 @@ public class CMSTestUtil
 
         crlGen.addExtension(Extension.authorityKeyIdentifier, false, extensionUtils.createAuthorityKeyIdentifier(pair.getPublic()));
 
-        return new JcaX509CRLConverter().setProvider("SC").getCRL(crlGen.build(new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider("SC").build(pair.getPrivate())));
+        return new JcaX509CRLConverter().setProvider(new BouncyCastleProvider()).getCRL(crlGen.build(new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider(new BouncyCastleProvider()).build(pair.getPrivate())));
     }
 
     /*  

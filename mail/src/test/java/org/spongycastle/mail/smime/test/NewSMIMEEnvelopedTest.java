@@ -88,10 +88,8 @@ public class NewSMIMEEnvelopedTest
     {
         if (!_initialised)
         {
-            if (Security.getProvider("SC") == null)
-            {
-                Security.addProvider(new BouncyCastleProvider());
-            }
+
+            Security.addProvider(new BouncyCastleProvider());
 
             _initialised = true;
 
@@ -155,7 +153,7 @@ public class NewSMIMEEnvelopedTest
     private PrivateKey loadKey(String name)
         throws Exception
     {
-        return new JcaPEMKeyConverter().setProvider("SC").getKeyPair((PEMKeyPair)(new PEMParser(new InputStreamReader(getClass().getResourceAsStream(name)))).readObject()).getPrivate();
+        return new JcaPEMKeyConverter().setProvider(new BouncyCastleProvider()).getKeyPair((PEMKeyPair)(new PEMParser(new InputStreamReader(getClass().getResourceAsStream(name)))).readObject()).getPrivate();
     }
 
     public void testHeaders()

@@ -61,6 +61,7 @@ import org.spongycastle.i18n.filter.TrustedInput;
 import org.spongycastle.i18n.filter.UntrustedInput;
 import org.spongycastle.jce.PrincipalUtil;
 import org.spongycastle.jce.X509Principal;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.mail.smime.SMIMESigned;
 import org.spongycastle.util.Integers;
 import org.spongycastle.x509.CertPathReviewerException;
@@ -174,7 +175,7 @@ public class SignedMailValidator
             }
 
             // save certstore and signerInformationStore
-            certs = new JcaCertStoreBuilder().addCertificates(s.getCertificates()).addCRLs(s.getCRLs()).setProvider("SC").build();
+            certs = new JcaCertStoreBuilder().addCertificates(s.getCertificates()).addCRLs(s.getCRLs()).setProvider(new BouncyCastleProvider()).build();
             signers = s.getSignerInfos();
 
             // save "from" addresses from message
@@ -269,7 +270,7 @@ public class SignedMailValidator
                 boolean validSignature = false;
                 try
                 {
-                    validSignature = signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("SC").build(cert.getPublicKey()));
+                    validSignature = signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider(new BouncyCastleProvider()).build(cert.getPublicKey()));
                     if (!validSignature)
                     {
                         ErrorBundle msg = new ErrorBundle(RESOURCE_NAME,
@@ -706,7 +707,7 @@ public class SignedMailValidator
                     {
                         try
                         {
-                            cert.verify(anchorCert.getPublicKey(), "SC");
+                            cert.verify(anchorCert.getPublicKey(), new BouncyCastleProvider().getName());
                             trustAnchorFound = true;
                             taCert = anchorCert;
                             break;
@@ -829,7 +830,7 @@ public class SignedMailValidator
             }
         }
 
-        CertPath certPath = CertificateFactory.getInstance("X.509", "SC").generateCertPath(new ArrayList(certSet));
+        CertPath certPath = CertificateFactory.getInstance("X.509", new BouncyCastleProvider()).generateCertPath(new ArrayList(certSet));
         return new Object[]{certPath, userProvidedList};
     }
 

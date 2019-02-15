@@ -46,7 +46,7 @@ public class AllTests
 
         protected void tearDown()
         {
-            Security.removeProvider("SC");
+            Security.removeProvider(new BouncyCastleProvider());
         }
     }
 }

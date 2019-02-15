@@ -51,10 +51,8 @@ public class SMIMECompressedTest
 
     static
     {
-        if (Security.getProvider("SC") == null)
-        {
-            Security.addProvider(new BouncyCastleProvider());
-        }
+
+        Security.addProvider(new BouncyCastleProvider());
     }
 
     boolean DEBUG = true;
@@ -89,8 +87,10 @@ public class SMIMECompressedTest
          String name)
         throws Exception
     {
+
         super(name);
-        
+        Security.addProvider(new BouncyCastleProvider());
+
         msg      = SMIMETestUtil.makeMimeBodyPart("Hello world!");
 
         signDN   = "O=Bouncy Castle, C=AU";
@@ -184,7 +184,7 @@ public class SMIMECompressedTest
 
         SMIMESignedGenerator gen = new SMIMESignedGenerator();
 
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA1withRSA", origKP.getPrivate(), origCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider(new BouncyCastleProvider()).setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA1withRSA", origKP.getPrivate(), origCert));
 
         gen.addCertificates(certs);
 
@@ -231,7 +231,7 @@ public class SMIMECompressedTest
             Iterator            certIt = certCollection.iterator();
             X509CertificateHolder     cert = (X509CertificateHolder)certIt.next();
 
-            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("SC").build(cert)));
+            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider(new BouncyCastleProvider()).build(cert)));
         }
     }
 }

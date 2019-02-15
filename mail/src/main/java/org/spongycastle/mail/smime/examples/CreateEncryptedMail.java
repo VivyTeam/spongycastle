@@ -46,10 +46,8 @@ public class CreateEncryptedMail
             System.exit(0);
         }
 
-        if (Security.getProvider("SC") == null)
-        {
-            Security.addProvider(new BouncyCastleProvider());
-        }
+
+        Security.addProvider(new BouncyCastleProvider());
 
         //
         // Open the key store

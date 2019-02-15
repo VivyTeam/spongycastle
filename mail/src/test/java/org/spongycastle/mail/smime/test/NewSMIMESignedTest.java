@@ -106,10 +106,8 @@ public class NewSMIMESignedTest
     {
         try
         {
-            if (Security.getProvider("SC") == null)
-            {
-                Security.addProvider(new BouncyCastleProvider());
-            }
+
+            Security.addProvider(new BouncyCastleProvider());
 
             msg      = SMIMETestUtil.makeMimeBodyPart("Hello world!\n");
 
@@ -761,7 +759,7 @@ public class NewSMIMESignedTest
 
         SMIMESignedGenerator gen = new SMIMESignedGenerator();
 
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").build("SHA1withDSA", dsaOrigKP.getPrivate(), dsaOrigCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider(new BouncyCastleProvider()).build("SHA1withDSA", dsaOrigKP.getPrivate(), dsaOrigCert));
         gen.addCertificates(certs);
 
         MimeMultipart smm = gen.generate(msg);
@@ -1217,7 +1215,7 @@ public class NewSMIMESignedTest
             X509CertificateHolder certHolder = (X509CertificateHolder)certIt.next();
 
             // in this case the sig is invalid, but it's the lack of an exception from the content digest we're looking for
-            Assert.assertFalse(signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("SC").build(certHolder)));
+            Assert.assertFalse(signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider(new BouncyCastleProvider()).build(certHolder)));
         }
     }
 
@@ -1310,7 +1308,7 @@ public class NewSMIMESignedTest
             Iterator        certIt = certCollection.iterator();
             X509CertificateHolder certHolder = (X509CertificateHolder)certIt.next();
 
-            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("SC").build(certHolder)));
+            assertEquals(true, signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider(new BouncyCastleProvider()).build(certHolder)));
         }
     }
     

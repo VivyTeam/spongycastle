@@ -14,6 +14,7 @@ import org.spongycastle.cms.RecipientInformation;
 import org.spongycastle.cms.RecipientInformationStore;
 import org.spongycastle.cms.jcajce.JceKeyTransEnvelopedRecipient;
 import org.spongycastle.cms.jcajce.JceKeyTransRecipientId;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.mail.smime.SMIMEEnvelopedParser;
 import org.spongycastle.mail.smime.SMIMEUtil;
 import org.spongycastle.mail.smime.util.SharedFileInputStream;
@@ -40,7 +41,7 @@ public class ReadLargeEncryptedMail
         //
         // Open the key store
         //
-        KeyStore    ks = KeyStore.getInstance("PKCS12", "SC");
+        KeyStore    ks = KeyStore.getInstance("PKCS12", new BouncyCastleProvider());
         String      keyAlias = ExampleUtils.findKeyAlias(ks, args[0], args[1].toCharArray());
 
         //
@@ -64,7 +65,7 @@ public class ReadLargeEncryptedMail
         RecipientInformationStore   recipients = m.getRecipientInfos();
         RecipientInformation        recipient = recipients.get(recId);
 
-        MimeBodyPart        res = SMIMEUtil.toMimeBodyPart(recipient.getContentStream(new JceKeyTransEnvelopedRecipient((PrivateKey)ks.getKey(keyAlias, null)).setProvider("SC")));
+        MimeBodyPart        res = SMIMEUtil.toMimeBodyPart(recipient.getContentStream(new JceKeyTransEnvelopedRecipient((PrivateKey)ks.getKey(keyAlias, null)).setProvider(new BouncyCastleProvider())));
 
         ExampleUtils.dumpContent(res, args[2]);
     }

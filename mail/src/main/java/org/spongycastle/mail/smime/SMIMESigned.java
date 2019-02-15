@@ -29,7 +29,7 @@ import org.spongycastle.cms.CMSSignedData;
  * matches the given signer...
  * <p>
  * <pre>
- *  CertStore               certs = s.getCertificates("Collection", "SC");
+ *  CertStore               certs = s.getCertificates("Collection", new BouncyCastleProvider());
  *  SignerInformationStore  signers = s.getSignerInfos();
  *  Collection              c = signers.getSigners();
  *  Iterator                it = c.iterator();

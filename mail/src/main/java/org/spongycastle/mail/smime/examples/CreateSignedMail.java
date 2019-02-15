@@ -41,6 +41,7 @@ import org.spongycastle.cert.jcajce.JcaCertStore;
 import org.spongycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.spongycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.spongycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.mail.smime.SMIMESignedGenerator;
 import org.spongycastle.operator.OperatorCreationException;
 import org.spongycastle.operator.jcajce.JcaContentSignerBuilder;
@@ -100,7 +101,7 @@ public class CreateSignedMail
             false,
             createAuthorityKeyId(issPub));
 
-        return new JcaX509CertificateConverter().setProvider("SC").getCertificate(v3CertGen.build(new JcaContentSignerBuilder("MD5withRSA").setProvider("SC").build(issPriv)));
+        return new JcaX509CertificateConverter().setProvider(new BouncyCastleProvider()).getCertificate(v3CertGen.build(new JcaContentSignerBuilder("MD5withRSA").setProvider(new BouncyCastleProvider()).build(issPriv)));
     }
 
     public static void main(
@@ -110,7 +111,7 @@ public class CreateSignedMail
         //
         // set up our certs
         //
-        KeyPairGenerator    kpg  = KeyPairGenerator.getInstance("RSA", "SC");
+        KeyPairGenerator    kpg  = KeyPairGenerator.getInstance("RSA", new BouncyCastleProvider());
 
         kpg.initialize(1024, new SecureRandom());
 
@@ -173,7 +174,7 @@ public class CreateSignedMail
         // will be generated as part of the signature. The encryption algorithm
         // used is taken from the key - in this RSA with PKCS1Padding
         //
-        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("SC").setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA1withRSA", origKP.getPrivate(), origCert));
+        gen.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider(new BouncyCastleProvider()).setSignedAttributeGenerator(new AttributeTable(signedAttrs)).build("SHA1withRSA", origKP.getPrivate(), origCert));
 
         //
         // add our pool of certs and cerls (if any) to go with the signature
