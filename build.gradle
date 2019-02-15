@@ -2,6 +2,9 @@ buildscript {
     repositories {
         maven {
             url "https://plugins.gradle.org/m2/"
+            mavenCentral()
+            google()
+
         }
     }
 
@@ -9,6 +12,7 @@ buildscript {
         classpath "net.saliman:gradle-cobertura-plugin:2.3.2"
         classpath 'com.android.tools.build:gradle:3.3.1'
     }
+
 }
 
 configure(allprojects - project(':mail')) {
@@ -165,11 +169,14 @@ subprojects {
             jcenter()
             maven {
                 url "https://maven.java.net/content/groups/public/"
+                mavenCentral()
+                google()
+
             }
 
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:2.1.2'
+            classpath 'com.android.tools.build:gradle:3.3.1'
             classpath "net.saliman:gradle-cobertura-plugin:2.3.2"
         }
     }

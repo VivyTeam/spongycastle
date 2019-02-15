@@ -36,6 +36,8 @@ cobertura {
 buildscript {
     repositories {
         mavenCentral()
+        google()
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
