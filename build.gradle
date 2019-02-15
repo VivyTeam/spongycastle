@@ -23,6 +23,8 @@ configure(allprojects - project(':mail')) {
 
     repositories {
         mavenCentral()
+        google()
+        jcenter()
     }
 
     dependencies {
@@ -116,6 +118,7 @@ configure(subprojects - project(':mail')) {
 
     repositories {
         mavenCentral()
+        google()
     }
 
     dependencies {
@@ -192,6 +195,9 @@ subprojects {
 project(':mail') {
     repositories {
         jcenter()
+        google()
+        url "https://maven.java.net/content/groups/public/"
+        mavenCentral()
     }
 }
 
